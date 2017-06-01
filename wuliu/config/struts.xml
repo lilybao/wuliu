@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts> 
+  <!-- struts的开发者模式  修改xml文件后立即加载 -->  
+  <constant name="struts.devMode" value="false"/>  
+  <package name="bos_1" extends="struts-default"> 
+    <interceptors> 
+      <!--  定义拦截器-->  
+      <interceptor name="loginInterceptor" class="cn.itheima.bos.web.interceptor.LoginInterceptor"> 
+        <!-- 过滤登录方法 -->  
+        <param name="excludeMethods">login</param> 
+      </interceptor>  
+      <!-- 定义拦截器栈 -->  
+      <interceptor-stack name="mystack"> 
+        <interceptor-ref name="loginInterceptor"/>  
+        <!--  默认拦截器-->  
+        <interceptor-ref name="defaultStack"/> 
+      </interceptor-stack> 
+    </interceptors>  
+    <!-- 使用拦截器 -->  
+    <!-- <default-interceptor-ref name="mystack"></default-interceptor-ref>  -->  
+    <!-- 全局结果集 -->  
+    <global-results> 
+      <result name="unauthorizedUrl">/unauthorized.jsp</result>  
+      <result name="login">/login.jsp</result> 
+    </global-results>  
+    <!-- 配置全局异常结果集  注解方式权限不足抛出异常-->  
+    <global-exception-mappings> 
+      <exception-mapping result="unauthorizedUrl" exception="org.apache.shiro.authz.AuthorizationException"/> 
+    </global-exception-mappings>  
+    <action name="page_*_*"> 
+      <result>/WEB-INF/pages/{1}/{2}.jsp</result> 
+    </action>  
+    <!-- 用户 -->  
+    <action name="userAction_*" class="userAction" method="{1}"> 
+      <result name="home" type="redirectAction">page_common_index</result>  
+      <result name="loginout" type="redirect">login.jsp</result> 
+      <result name="tolist" >/WEB-INF/pages/admin/userlist.jsp</result> 
+    </action>  
+    <!-- staff -->  
+    <action name="staffAction_*" class="staffAction" method="{1}"> 
+      <result name="tolist" >/WEB-INF/pages/base/staff.jsp</result> 
+    </action>  
+    <action name="regionAction_*" class="regionAction" method="{1}"/>  
+    <!-- subaera -->  
+    <action name="subareaAction_*" class="subareaAction" method="{1}"> 
+      <result name="list">/WEB-INF/pages/base/subarea.jsp</result> 
+    </action>  
+    <!-- decidedzoneAction -->  
+    <action name="decidedzoneAction_*" class="decidedzoneAction" method="{1}"> 
+      <result name="tolist">/WEB-INF/pages/base/decidedzone.jsp</result> 
+    </action>  
+    <!-- noticebillAction -->  
+    <action name="noticebillAction_*" class="noticebillAction" method="{1}"> 
+      <result name="tolist">/WEB-INF/pages/qupai/noticebill.jsp</result> 
+    </action>  
+    <!-- workbillAction -->  
+    <action name="workbillAction_*" class="workbillAction" method="{1}"> 
+      <result name="tolist">/WEB-INF/pages/qupai/noticebill.jsp</result> 
+    </action>  
+    <!-- workorderAction -->  
+    <action name="workorderAction_*" class="workordermanageAction" method="{1}"> 
+      <result name="tolist">/WEB-INF/pages/qupai/quickworkorder.jsp</result> 
+    </action>  
+    <action name="functionAction_*" class="functionAction" method="{1}"> 
+      <result name="tolist">/WEB-INF/pages/admin/function.jsp</result> 
+    </action>  
+    <action name="roleAction_*" class="roleAction" method="{1}">
+    	<result name="tolist">/WEB-INF/pages/admin/role.jsp</result>
+    </action>
+  </package> 
+</struts>
